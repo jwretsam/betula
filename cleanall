@@ -1,0 +1,10 @@
+#! /bin/sh
+
+make distclean
+rm -fR autom4te.cache Makefile.in aclocal.m4 config.guess config.sub configure depcomp install-sh ltmain.sh missing config.h  config.h.in
+rm -fR config.log config.status libtool stamp-h1
+
+rm -fR libfpsplit/include/lconfig.h revision.h config/revtag ylwrap
+
+find ./ -name Makefile.in -type f -print | xargs /bin/rm -f
+find ./ -name Makefile -type f -print | xargs /bin/rm -f

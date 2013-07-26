@@ -1,0 +1,51 @@
+
+AC_PREREQ([2.63])
+AC_INIT([betula],[0.1])
+AC_CONFIG_SRCDIR([src/main.cpp])
+AM_INIT_AUTOMAKE
+
+AC_CONFIG_HEADERS([betula_config.h])
+
+CFLAGS="-std=gnu++11 -O2 -g3 -Wall"
+CXXFLAGS="-std=gnu++11 -O2 -g3 -Wall"
+
+AC_PROG_CXX
+AC_PROG_INSTALL
+
+AC_CHECK_PROG(BISON, bison, yes, no)
+if test "x$BISON" = "xno"; then
+    AC_MSG_ERROR([Couldn't find bison. Please verify that it is installed.])
+fi
+
+AC_CHECK_PROG(FLEX, flex, yes, no)
+if test "x$FLEX" = "xno"; then
+    AC_MSG_ERROR([Couldn't find flex. Please verify that it is installed.])
+fi
+
+AC_PROG_RANLIB
+AC_PROG_LIBTOOL
+
+dnl CFLAGS="${CFLAGS=}"
+dnl CXXFLAGS="${CXXFLAGS=}"
+
+dnl TMP11="-O2 -Wall -g3"
+TMP11="$CXXFLAGS"
+AC_SUBST([AM_CXXFLAGS], $TMP11)
+
+dnl AC_CHECK_LIB([pthread], [pthread_create])
+dnl AC_CHECK_LIB(ssl, SSL_library_init, , [AC_MSG_ERROR([Required OpenSsl])] )
+AC_CHECK_LIB([crypto], [MD5_Final], , [AC_MSG_ERROR([Required libcrypto])] )
+
+AC_CHECK_HEADERS([openssl/md5.h sys/epoll.h sys/event.h byteswap.h sys/byteswap.h])
+
+AC_CHECK_SIZEOF(int)
+AC_C_BIGENDIAN
+
+
+AC_CONFIG_FILES(
+    Makefile
+    src/Makefile
+    libbetula/Makefile
+    )
+
+AC_OUTPUT
